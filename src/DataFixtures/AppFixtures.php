@@ -4,14 +4,36 @@ namespace App\DataFixtures;
 
 use App\Entity\Album;
 use App\Entity\Band;
+use App\Entity\Genre;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
 
-class BandAndAlbumFixtures extends Fixture
+class AppFixtures extends Fixture
 {
     public function load(ObjectManager $manager): void
     {
-        // Données des groupes
+        $genresData = [
+            ['Metal Progressif'],
+            ['Hardcore'],
+            ['Metal Expérimental'],
+            ['Industriel'],
+            ['Musique Électronique'],
+            ['Nu Metal'],
+            ['Metal Alternatif'],
+            ['Rock Gothique'],
+            ['Post-Punk'],
+            ['Noise Punk'],
+        ];
+
+        $genreObjects = [];
+        foreach ($genresData as $genreName) {
+            $genre = new Genre();
+            $genre->setName($genreName[0]);
+
+            $manager->persist($genre);
+            $genreObjects[] = $genre; 
+        }
+
         $bands = [
             ['Tool', 'Tool est un groupe de metal progressif américain formé en 1990.', '1990-01-01', 'tool.jpg'],
             ['Nasty', 'Nasty est un groupe de beatdown hardcore belge, actif depuis 2004.', '2004-01-01', 'nasty.jpg'],
@@ -81,8 +103,10 @@ class BandAndAlbumFixtures extends Fixture
             $album->setReleaseDate(new \DateTime($releaseDate));
             $album->setImage($image);
 
-            // Se souvenir que c'est avec cette ligne qu'on associe les groupes avec leur album
             $album->setBand($bandObjects[$bandIndex]);
+
+            $randomGenre = $genreObjects[array_rand($genreObjects)];
+            $album->addGenre($randomGenre);
 
             $manager->persist($album);
         }
@@ -90,3 +114,4 @@ class BandAndAlbumFixtures extends Fixture
         $manager->flush(); 
     }
 }
+
