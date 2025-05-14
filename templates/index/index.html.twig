@@ -63,7 +63,19 @@
     </div>
   </div>
 
-  <p class="dark:text-gray-400">Sélecteur : Genre, Année de sortie, Mieux noté ? Moins bien noté ?</p>
+  {# PARTIE AFFICHAGE #}
 
-  <p>Liste d'album (les plus récents ajoutés)</p>
+  <div class="example-wrap">
+    <p class="dark:text-gray-400">Affichage des albums (par page, pas de défilement infini)</p>
+  </div>
+  <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-3 gap-6 mt-8">
+    {% for album in albums %}
+      <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
+        <h3 class="text-xl font-bold text-gray-900 dark:text-white">{{ album.title }}</h3>
+        <p class="text-sm text-gray-600 dark:text-gray-300">{{ album.artist.name }}</p>
+      </div>
+    {% else %}
+      <p class="text-gray-500 dark:text-gray-400">Aucun album trouvé.</p>
+    {% endfor %}
+  </div>
 {% endblock %}
