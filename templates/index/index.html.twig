@@ -53,12 +53,11 @@
       </form>
 
       <form class="max-w-sm mx-auto">
-        <select id="date" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500 h-12">
-          <option selected>Sélectionnez un genre</option>
-          <option value="2025">2025</option>
-          <option value="2024">2024</option>
-          <option value="2023">2023</option>
-          <option value="2022">2022</option>
+        <select id="genre" name="genre" class="bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500 h-12">
+          <option value="">Sélectionnez un genre</option>
+          {% for genre in genres %}
+            <option value="{{ genre.id }}">{{ genre.name }}</option>
+          {% endfor %}
         </select>
       </form>
     </div>
