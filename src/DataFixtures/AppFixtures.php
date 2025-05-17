@@ -5,11 +5,16 @@ namespace App\DataFixtures;
 use App\Entity\Album;
 use App\Entity\Band;
 use App\Entity\Genre;
+use App\Entity\User;
 use Doctrine\Bundle\FixturesBundle\Fixture;
 use Doctrine\Persistence\ObjectManager;
+use Symfony\Component\PasswordHasher\Hasher\UserPasswordHasherInterface;
 
 class AppFixtures extends Fixture
 {
+    public function __construct(private UserPasswordHasherInterface $hasher) {
+
+    }
     public function load(ObjectManager $manager): void
     {
         $genresData = [
@@ -110,6 +115,20 @@ class AppFixtures extends Fixture
 
             $manager->persist($album);
         }
+
+        $regularUser = new User();
+        $regularUser->setEmail('smousmou@test.com')
+             ->setPassword($this->hasher->hashPassword($regularUser, 'test'))
+             ->setRoles(['ROLE_USER']);
+
+        $manager->persist($regularUser);
+
+        $adminUser = new User();
+        $adminUser->setEmail('admin@test.com')
+             ->setPassword($this->hasher->hashPassword($adminUser, 'admin'))
+             ->setRoles(['ROLE_ADMIN']);
+
+        $manager->persist($adminUser);
 
         $manager->flush(); 
     }

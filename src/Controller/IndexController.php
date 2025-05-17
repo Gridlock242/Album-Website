@@ -10,7 +10,7 @@ use Symfony\Component\Routing\Attribute\Route;
 
 final class IndexController extends AbstractController
 {
-    #[Route('/', name: 'index')]
+    #[Route('/', name: 'app_index')]
     public function index(GenreRepository $genreRepository, AlbumRepository $albumRepository, int $page = 1): Response
     {
         $genres = $genreRepository->findBy([], ['name' => 'ASC']);
