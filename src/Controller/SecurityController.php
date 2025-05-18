@@ -17,10 +17,8 @@ class SecurityController extends AbstractController
     #[Route(path: '/login', name: 'app_login')]
     public function login(AuthenticationUtils $authenticationUtils): Response
     {
-        // get the login error if there is one
+        // Supprimez la partie de création manuelle de session
         $error = $authenticationUtils->getLastAuthenticationError();
-
-        // last username entered by the user
         $lastUsername = $authenticationUtils->getLastUsername();
 
         return $this->render('security/login.html.twig', [
@@ -28,7 +26,6 @@ class SecurityController extends AbstractController
             'error' => $error,
         ]);
     }
-
 
 
     #[Route(path: '/logout', name: 'app_logout')]
@@ -40,14 +37,14 @@ class SecurityController extends AbstractController
 
     #[Route('/registration', name: 'app_registration')]
     public function registration(Request $request, EntityManagerInterface $entityManager, UserPasswordHasherInterface $passwordHasher): Response
-{
-    if (headers_sent($file, $line)) {
-        throw new \RuntimeException("⚠️ Les headers ont déjà été envoyés dans le fichier : $file à la ligne : $line");
-    }
-
+    {
         $user = new User();
         $form = $this->createForm(RegistrationFormType::class, $user);
         $form->handleRequest($request);
+
+        if ($form->isSubmitted()) {
+            dump($form->getErrors(true));
+        }
 
         if ($form->isSubmitted() && $form->isValid()) {
             $hashedPassword = $passwordHasher->hashPassword(

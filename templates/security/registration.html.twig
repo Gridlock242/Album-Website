@@ -17,17 +17,16 @@
             {{ form_errors(registrationForm.email) }}
           </div>
 
-          <div>
-            {{ form_row(registrationForm.plainPassword.first, {
-              'label': 'Mot de passe',
-              'attr': {'class': 'mb-2 text-sm font-medium text-gray-900 dark:text-white'},
-              'row_attr': {'class': 'mb-2'}
-            }) }}
-            {{ form_row(registrationForm.plainPassword.second, {
-              'label': 'Confirmer le mot de passe',
-              'attr': {'class': 'mb-2 text-sm font-medium text-gray-900 dark:text-white'},
-              'row_attr': {'class': 'mb-2'}
-            }) }}
+          <div class="mb-2">
+            {{ form_label(registrationForm.plainPassword.first, 'Mot de passe', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(registrationForm.plainPassword.first, {'attr': {'class': 'bg-gray-50 border border-gray-300 rounded text-gray-900 text-sm focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500'}}) }}
+            {{ form_errors(registrationForm.plainPassword.first) }}
+          </div>
+
+          <div class="mb-2">
+            {{ form_label(registrationForm.plainPassword.second, 'Confirmer le mot de passe', {'label_attr': {'class': 'block mb-2 text-sm font-medium text-gray-900 dark:text-white'}}) }}
+            {{ form_widget(registrationForm.plainPassword.second, {'attr': {'class': 'bg-gray-50 border border-gray-300 rounded text-gray-900 text-sm focus:ring-purple-600 focus:border-purple-600 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500'}}) }}
+            {{ form_errors(registrationForm.plainPassword.second) }}
           </div>
 
           <div class="flex items-start">
@@ -55,4 +54,5 @@
   </div>
 </section>
 {% endblock %}
+
 
