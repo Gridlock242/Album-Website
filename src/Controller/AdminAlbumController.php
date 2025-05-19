@@ -5,6 +5,7 @@ namespace App\Controller;
 use App\Entity\Album;
 use App\Form\AlbumType;
 use App\Repository\AlbumRepository;
+use App\Repository\GenreRepository;
 use Doctrine\ORM\EntityManagerInterface;
 use Symfony\Bundle\FrameworkBundle\Controller\AbstractController;
 use Symfony\Component\HttpFoundation\Request;
@@ -14,14 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AdminAlbumController extends AbstractController
 {
     #[Route('/admin/album', name: 'app_admin_album')]
-    public function index(
-        Request $request,
-        EntityManagerInterface $entityManager,
-        AlbumRepository $albumRepository
-    ): Response {
+    public function index( Request $request, EntityManagerInterface $entityManager, AlbumRepository $albumRepository, GenreRepository $genreRepository): Response 
+    {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $albums = $albumRepository->findAll(); // <-- Correction ici
+        $genres = $genreRepository->findAll(); 
+        $albums = $albumRepository->findAll(); 
 
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
@@ -37,6 +36,7 @@ final class AdminAlbumController extends AbstractController
 
         return $this->render('admin_album/index.html.twig', [
             'albums' => $albums,
+            'genres' => $genres,
             'form' => $form->createView(),
         ]);
     }
