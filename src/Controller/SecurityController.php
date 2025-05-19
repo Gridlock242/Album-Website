@@ -53,6 +53,8 @@ class SecurityController extends AbstractController
             );
             $user->setPassword($hashedPassword);
 
+            $user->setRoles(['ROLE_USER']);
+
             $entityManager->persist($user);
             $entityManager->flush();
 
