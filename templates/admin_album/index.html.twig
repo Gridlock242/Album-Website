@@ -48,30 +48,35 @@
 <table class="min-w-full divide-y divide-gray-200 bg-gray-600 shadow-md rounded-lg overflow-hidden">
     <thead class="text-xs dark:bg-gray-700">
         <tr>
-            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-500">Titre</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-500">Artiste</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-500">Année</th>
-            <th class="px-6 py-3 text-left text-sm font-semibold text-gray-500">Genre</th>
-            <th class="px-6 py-3 text-center text-sm font-semibold text-gray-500">Actions</th>
+            <th class="px-6 py-3 text-left text-sm font-bold text-gray-400">Titre</th>
+            <th class="px-6 py-3 text-left text-sm font-bold text-gray-400">Artiste</th>
+            <th class="px-6 py-3 text-left text-sm font-bold text-gray-400">Année</th>
+            {# <th class="px-6 py-3 text-left text-sm font-bold text-gray-400">Genre</th> #}
+            <th class="px-6 py-3 text-center text-sm font-bold text-gray-400">Actions</th>
         </tr>
     </thead>
     <tbody class="divide-y divide-gray-200">
         {% for album in albums %}
         
-        <tr class="hover:bg-gray-50 transition">
-            <td class="px-6 py-4 text-sm text-gray-800">{{ album.title }}</td>
-            <td class="px-6 py-4 text-sm text-gray-800">{{ album.band.name }}</td>
-            {# <td class="px-6 py-4 text-sm text-gray-800">{{ album.releaseDate }}</td> #}
-            {# <td class="px-6 py-4 text-sm text-gray-800">{{ album.genre.name }}</td> #}
-            {# <td class="px-6 py-4 text-sm text-gray-800">{{ album.averageRating|number_format(1, '.', ',') }}</td>
-            <td class="px-6 py-4 text-sm text-gray-800">{{ album.voteCount }}</td> #}
-            <td class="px-6 py-4 text-center space-x-2">
-                {# <a href="{{ path('album_edit', { id: album.id }) }}" class="text-blue-600 hover:text-blue-800 font-medium">Modifier</a> #}
-                {# <form method="post" action="{{ path('album_delete', { id: album.id }) }}" class="inline-block" onsubmit="return confirm('Voulez-vous vraiment supprimer cet album ?');">
+        <tr class="hover:bg-gray-700 transition">
+            <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ album.title }}</td>
+            <td class="px-6 py-4 text-sm font-semibold text-gray-50">{{ album.band.name }}</td>
+            <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ album.releaseDate|date('Y') }}</td>
+            {# <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ album.genres.name }}</td> #}
+
+            {# Par réussi à faire afficher le genre #}
+        {# {% for genre in album.genres %}
+          <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ genre.name }}</td>
+        {% endfor %} #}
+
+
+            {# <td class="px-6 py-4 text-center space-x-2">
+                <a href="{{ path('admin_album_edit', { id: album.id }) }}" class="text-blue-400 hover:text-blue-200 font-medium">Modifier</a>
+                <form method="post" action="{{ path('admin_album_delete', { id: album.id }) }}" class="inline-block" onsubmit="return confirm('Voulez-vous vraiment supprimer cet album ?');">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ album.id) }}">
-                    <button type="submit" class="text-red-600 hover:text-red-800 font-medium">Supprimer</button>
-                </form> #}
-            </td>
+                    <button type="submit" class="text-red-400 hover:text-red-200 font-medium">Supprimer</button>
+                </form>
+            </td> #}
         </tr>
         {% else %}
         <tr>
@@ -80,7 +85,6 @@
         {% endfor %}
     </tbody>
 </table>
-
 
 {% endblock %}
 

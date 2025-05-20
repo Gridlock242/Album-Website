@@ -28,12 +28,12 @@ class Genre
      * @var Collection<int, Album>
      */
     #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genres')]
-    private Collection $album;
+    private Collection $albums;
 
     public function __construct()
     {
         $this->band = new ArrayCollection();
-        $this->album = new ArrayCollection();
+        $this->albums = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -82,13 +82,13 @@ class Genre
      */
     public function getAlbum(): Collection
     {
-        return $this->album;
+        return $this->albums;
     }
 
     public function addAlbum(Album $album): static
     {
-        if (!$this->album->contains($album)) {
-            $this->album->add($album);
+        if (!$this->albums->contains($album)) {
+            $this->albums->add($album);
         }
 
         return $this;
@@ -96,7 +96,7 @@ class Genre
 
     public function removeAlbum(Album $album): static
     {
-        $this->album->removeElement($album);
+        $this->albums->removeElement($album);
 
         return $this;
     }

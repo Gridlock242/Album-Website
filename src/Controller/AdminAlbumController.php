@@ -52,4 +52,6 @@ final class AdminAlbumController extends AbstractController
 
         return $this->redirectToRoute('app_admin_album');
     }
+
+    
 }
