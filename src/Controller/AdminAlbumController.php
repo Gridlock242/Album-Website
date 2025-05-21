@@ -15,12 +15,12 @@ use Symfony\Component\Routing\Attribute\Route;
 final class AdminAlbumController extends AbstractController
 {
     #[Route('/admin/album', name: 'app_admin_album')]
-    public function index( Request $request, EntityManagerInterface $entityManager, AlbumRepository $albumRepository, GenreRepository $genreRepository): Response 
+    public function index(Request $request, EntityManagerInterface $entityManager, AlbumRepository $albumRepository, GenreRepository $genreRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
 
-        $genres = $genreRepository->findAll(); 
-        $albums = $albumRepository->findAll(); 
+        $genres = $genreRepository->findAll();
+        $albums = $albumRepository->findAll();
 
         $album = new Album();
         $form = $this->createForm(AlbumType::class, $album);
@@ -41,17 +41,24 @@ final class AdminAlbumController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/album/delete/{id}', name: 'admin_album_delete', methods: ['POST'])]
-    public function delete(Album $album, EntityManagerInterface $entityManager): Response
-    {
-        $this->denyAccessUnlessGranted('ROLE_ADMIN');
-
-        $entityManager->remove($album);
-        $entityManager->flush();
-        $this->addFlash('success', 'Album supprimé avec succès !');
-
-        return $this->redirectToRoute('app_admin_album');
-    }
-
+#[Route('/admin/album/delete/{id}', name: 'admin_album_delete', methods: ['POST'])]
+public function delete(Request $request, $id, EntityManagerInterface $entityManager, AlbumRepository $albumRepository): Response
+{
+    $this->denyAccessUnlessGranted('ROLE_ADMIN');
     
+    // Débogage
+    dump($request->request->all()); // Affiche tous les paramètres de la requête
+    
+    $album = $albumRepository->find($id);
+    
+    if (!$album) {
+        throw $this->createNotFoundException('Album non trouvé');
+    }
+    
+    $entityManager->remove($album);
+    $entityManager->flush();
+    
+    $this->addFlash('success', 'Album supprimé avec succès !');
+    return $this->redirectToRoute('app_admin_album');
+}
 }

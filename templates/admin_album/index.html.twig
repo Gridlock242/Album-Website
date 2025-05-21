@@ -7,7 +7,7 @@
 {% block body %}
   <div class="max-w-screen-xl mx-auto px-4 py-8">
     <h1 class="mb-4 text-3xl font-extrabold text-gray-900 dark:text-white md:text-5xl lg:text-6xl"><span class="text-transparent bg-clip-text bg-gradient-to-r to-emerald-600 from-sky-400">Bienvenue</span>, Admin.</h1>
-    <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 mb-6">Cette page permet de gérer les albums</p>
+    <p class="text-lg font-normal text-gray-500 lg:text-xl dark:text-gray-400 mb-6">Page de gestion des albums</p>
 
     {# PARTIE RECHERCHE #}
     <div class="flex flex-col md:flex-row gap-4 mb-8">
@@ -64,19 +64,19 @@
             <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ album.releaseDate|date('Y') }}</td>
             {# <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ album.genres.name }}</td> #}
 
-            {# Par réussi à faire afficher le genre #}
+            {# CE BLOC DE CODE POSE PROBLEME #}
         {# {% for genre in album.genres %}
           <td class="px-6 py-4 text-sm font-semibold text-gray-400">{{ genre.name }}</td>
         {% endfor %} #}
 
 
-            {# <td class="px-6 py-4 text-center space-x-2">
-                <a href="{{ path('admin_album_edit', { id: album.id }) }}" class="text-blue-400 hover:text-blue-200 font-medium">Modifier</a>
+            <td class="px-6 py-4 text-center space-x-2">
+                {# <a href="{{ path('admin_album_edit', { id: album.id }) }}" class="text-blue-400 hover:text-blue-200 font-medium">Modifier</a> #}
                 <form method="post" action="{{ path('admin_album_delete', { id: album.id }) }}" class="inline-block" onsubmit="return confirm('Voulez-vous vraiment supprimer cet album ?');">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ album.id) }}">
                     <button type="submit" class="text-red-400 hover:text-red-200 font-medium">Supprimer</button>
                 </form>
-            </td> #}
+            </td>
         </tr>
         {% else %}
         <tr>

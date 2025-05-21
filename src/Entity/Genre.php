@@ -27,7 +27,7 @@ class Genre
     /**
      * @var Collection<int, Album>
      */
-    #[ORM\ManyToMany(targetEntity: Album::class, inversedBy: 'genres')]
+    #[ORM\ManyToMany(targetEntity: Album::class, mappedBy: 'genres')]
     private Collection $albums;
 
     public function __construct()
@@ -80,7 +80,7 @@ class Genre
     /**
      * @return Collection<int, Album>
      */
-    public function getAlbum(): Collection
+    public function getAlbums(): Collection
     {
         return $this->albums;
     }
