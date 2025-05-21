@@ -71,7 +71,7 @@
 
 
             <td class="px-6 py-4 text-center space-x-2">
-                {# <a href="{{ path('admin_album_edit', { id: album.id }) }}" class="text-blue-400 hover:text-blue-200 font-medium">Modifier</a> #}
+                <a href="{{ path('admin_album_edit', { id: album.id }) }}" class="text-blue-400 hover:text-blue-200 font-medium">Modifier</a>
                 <form method="post" action="{{ path('admin_album_delete', { id: album.id }) }}" class="inline-block" onsubmit="return confirm('Voulez-vous vraiment supprimer cet album ?');">
                     <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ album.id) }}">
                     <button type="submit" class="text-red-400 hover:text-red-200 font-medium">Supprimer</button>
@@ -87,20 +87,3 @@
 </table>
 
 {% endblock %}
-
-
-    {# <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-4 gap-6">
-      {% for album in albums %}
-        <div class="bg-white dark:bg-gray-800 p-4 rounded-lg shadow">
-          {% if album.image %}
-            <img src="{{ asset('images/assets/album/' ~ album.image) }}" alt="{{ album.title }}" class="w-full h-48 object-cover rounded mb-2">
-          {% endif %}
-          <h3 class="text-lg font-bold text-gray-900 dark:text-white">{{ album.title }}</h3>
-          <p class="text-sm text-gray-600 dark:text-gray-300">Par : {{ album.band.name }}</p>
-          <p class="text-sm text-gray-600 dark:text-gray-300">Année : {{ album.releaseDate|date('Y') }}</p>
-
-          <form action="{{ path('admin_album_delete', {id: album.id}) }}" method="post" onsubmit="return confirm('Supprimer cet album ?');">
-            <input type="hidden" name="_token" value="{{ csrf_token('delete' ~ album.id) }}">
-            <button type="submit" class="mt-2 text-sm text-red-600 hover:text-red-800">Supprimer</button>
-          </form>
-        </div> #}

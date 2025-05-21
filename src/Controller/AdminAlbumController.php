@@ -41,24 +41,41 @@ final class AdminAlbumController extends AbstractController
         ]);
     }
 
-#[Route('/admin/album/delete/{id}', name: 'admin_album_delete', methods: ['POST'])]
-public function delete(Request $request, $id, EntityManagerInterface $entityManager, AlbumRepository $albumRepository): Response
-{
-    $this->denyAccessUnlessGranted('ROLE_ADMIN');
-    
-    // Débogage
-    dump($request->request->all()); // Affiche tous les paramètres de la requête
-    
-    $album = $albumRepository->find($id);
-    
-    if (!$album) {
-        throw $this->createNotFoundException('Album non trouvé');
+    #[Route('/admin/album/delete/{id}', name: 'admin_album_delete', methods: ['POST'])]
+    public function delete(Request $request, $id, EntityManagerInterface $entityManager, AlbumRepository $albumRepository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $album = $albumRepository->find($id);
+
+        if (!$album) {
+            throw $this->createNotFoundException('Album non trouvé');
+        }
+
+        $entityManager->remove($album);
+        $entityManager->flush();
+
+        $this->addFlash('success', 'Album supprimé avec succès !');
+        return $this->redirectToRoute('app_admin_album');
     }
-    
-    $entityManager->remove($album);
-    $entityManager->flush();
-    
-    $this->addFlash('success', 'Album supprimé avec succès !');
-    return $this->redirectToRoute('app_admin_album');
-}
+
+    #[Route('/admin/album/edit/{id}', name: 'admin_album_edit', methods: ['GET', 'POST'])]
+    public function edit(Request $request, Album $album, EntityManagerInterface $entityManager): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $form = $this->createForm(AlbumType::class, $album);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->flush();
+            $this->addFlash('success', 'Album modifié avec succès !');
+            return $this->redirectToRoute('app_admin_album');
+        }
+
+        return $this->render('admin_album/edit.html.twig', [
+            'form' => $form->createView(),
+            'album' => $album,
+        ]);
+    }
 }
