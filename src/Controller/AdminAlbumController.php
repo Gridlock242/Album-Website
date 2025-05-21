@@ -81,4 +81,6 @@ final class AdminAlbumController extends AbstractController
             'genres' => $genres,
         ]);
     }
+
+    #[Route('/admin/album/upload'), ]
 }
