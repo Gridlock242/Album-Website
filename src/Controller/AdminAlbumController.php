@@ -60,9 +60,11 @@ final class AdminAlbumController extends AbstractController
     }
 
     #[Route('/admin/album/edit/{id}', name: 'admin_album_edit', methods: ['GET', 'POST'])]
-    public function edit(Request $request, Album $album, EntityManagerInterface $entityManager): Response
+    public function edit(Request $request, Album $album, EntityManagerInterface $entityManager, GenreRepository $genreRepository): Response
     {
         $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $genres = $genreRepository->findAll();
 
         $form = $this->createForm(AlbumType::class, $album);
         $form->handleRequest($request);
@@ -76,6 +78,7 @@ final class AdminAlbumController extends AbstractController
         return $this->render('admin_album/edit.html.twig', [
             'form' => $form->createView(),
             'album' => $album,
+            'genres' => $genres,
         ]);
     }
 }
