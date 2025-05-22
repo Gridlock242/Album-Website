@@ -34,9 +34,16 @@ class Album
     #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'albums')]
     #[ORM\JoinTable(name: 'album_genre')]    private Collection $genres;
 
+    /**
+     * @var Collection<int, Rating>
+     */
+    #[ORM\OneToMany(targetEntity: Rating::class, mappedBy: 'album')]
+    private Collection $ratings;
+
     public function __construct()
     {
         $this->genres = new ArrayCollection();
+        $this->ratings = new ArrayCollection();
     }
 
     public function getId(): ?int
@@ -114,6 +121,36 @@ class Album
     {
         if ($this->genres->removeElement($genre)) {
             $genre->removeAlbum($this);
+        }
+
+        return $this;
+    }
+
+    /**
+     * @return Collection<int, Rating>
+     */
+    public function getRatings(): Collection
+    {
+        return $this->ratings;
+    }
+
+    public function addRating(Rating $rating): static
+    {
+        if (!$this->ratings->contains($rating)) {
+            $this->ratings->add($rating);
+            $rating->setAlbum($this);
+        }
+
+        return $this;
+    }
+
+    public function removeRating(Rating $rating): static
+    {
+        if ($this->ratings->removeElement($rating)) {
+            // set the owning side to null (unless already changed)
+            if ($rating->getAlbum() === $this) {
+                $rating->setAlbum(null);
+            }
         }
 
         return $this;

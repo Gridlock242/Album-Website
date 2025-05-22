@@ -10,7 +10,7 @@
             <!-- Profil utilisateur -->
             <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
                 <div class="flex flex-col items-center text-center">
-                    <img src="{{ asset('images/assets/user/admin.png') }}"
+                    <img src="{{ asset('images/assets/user/' ~ app.user.image) }}"
                          alt="Photo de profil"
                          class="w-32 h-32 rounded-full shadow mb-4">
                     <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{ app.user.email }}</h1>
