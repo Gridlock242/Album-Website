@@ -1,20 +1,68 @@
 {% extends 'base.html.twig' %}
 
-{% block title %}Hello ProfileController!{% endblock %}
+{% block title %}Mon profil{% endblock %}
 
 {% block body %}
-<style>
-    .example-wrapper { margin: 1em auto; max-width: 800px; width: 95%; font: 18px/1.5 sans-serif; }
-    .example-wrapper code { background: #F5F5F5; padding: 2px 6px; }
-</style>
+<div class="bg-gray-100 dark:bg-gray-900 min-h-screen py-10">
+    <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
+        <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
+            <!-- Profil utilisateur -->
+            <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <div class="flex flex-col items-center text-center">
+                    <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                         alt="Photo de profil"
+                         class="w-32 h-32 rounded-full shadow mb-4">
+                    <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{ app.user.email }}</h1>
+                    <p class="text-gray-500 dark:text-gray-400">{{ app.user.description }}</p>
 
-<div class="example-wrapper">
-    <h1>Hello {{ controller_name }}! ✅</h1>
+                    <div class="mt-4 flex space-x-3">
+                        <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium">Envoyer un message</a>
+                    </div>
+                </div>
 
-    This friendly message is coming from:
-    <ul>
-        <li>Your controller at <code>D:/HB/Portfolio/album_website/src/Controller/ProfileController.php</code></li>
-        <li>Your template at <code>D:/HB/Portfolio/album_website/templates/profile/index.html.twig</code></li>
-    </ul>
+                {# <hr class="my-6 border-gray-300 dark:border-gray-700"> #}
+
+                {# <div>
+                    <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide"></h2>
+                    <ul class="mt-2 text-gray-600 dark:text-gray-400 text-sm space-y-1">
+                        <li>HTML/CSS</li>
+                        <li>Tailwind CSS</li>
+                        <li>JavaScript</li>
+                        <li>React</li>
+                        <li>PHP / Symfony</li>
+                    </ul>
+                </div> #}
+            </div>
+
+            <!-- À propos & expériences -->
+            <div class="md:col-span-2 bg-white dark:bg-gray-800 shadow rounded-lg p-6">
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">À propos de moi</h2>
+                <p class="text-gray-600 dark:text-gray-300 text-sm">
+                    Passionnée de développement web, j'aime créer des applications élégantes, performantes et accessibles. Je me spécialise en front-end avec une solide base back-end grâce à Symfony.
+                </p>
+
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-8 mb-4">Expériences</h3>
+
+                <div class="space-y-6 text-sm text-gray-700 dark:text-gray-300">
+                    <div>
+                        <div class="flex justify-between font-semibold">
+                            <span>Développeuse Web</span>
+                            <span class="text-sm font-normal">ABC Company · 2023 - Aujourd'hui</span>
+                        </div>
+                        <p class="mt-1">Développement d'applications Symfony, création d'interfaces avec Tailwind CSS, mise en place d'APIs REST.</p>
+                    </div>
+
+                    <div>
+                        <div class="flex justify-between font-semibold">
+                            <span>Stagiaire développement</span>
+                            <span class="text-sm font-normal">XYZ Studio · 2022</span>
+                        </div>
+                        <p class="mt-1">Refonte d'une application web avec Vue.js, intégration d'une charte graphique sur Tailwind CSS.</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </div>
 </div>
 {% endblock %}
+
