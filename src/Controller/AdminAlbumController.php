@@ -82,5 +82,28 @@ final class AdminAlbumController extends AbstractController
         ]);
     }
 
-    #[Route('/admin/album/upload'), ]
+    #[Route('/admin/album/upload', name: 'admin_album_upload', methods: ['GET', 'POST'])]
+    public function upload(Request $request, EntityManagerInterface $entityManager, GenreRepository $genreRepository): Response
+    {
+        $this->denyAccessUnlessGranted('ROLE_ADMIN');
+
+        $genres = $genreRepository->findAll();
+
+        $album = new Album();
+        $form = $this->createForm(AlbumType::class, $album);
+        $form->handleRequest($request);
+
+        if ($form->isSubmitted() && $form->isValid()) {
+            $entityManager->persist($album);
+            $entityManager->flush();
+
+            $this->addFlash('success', 'Nouvel album ajouté via la page Upload !');
+            return $this->redirectToRoute('app_admin_album');
+        }
+
+        return $this->render('admin_album/upload.html.twig', [
+            'form' => $form->createView(),
+            'genres' => $genres,
+        ]);
+    }
 }
