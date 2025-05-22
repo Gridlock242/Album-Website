@@ -46,12 +46,25 @@
     {# PARTIE AFFICHAGE ALBUMS #}
     <div class="grid grid-cols-1 md:grid-cols-2 lg:grid-cols-5 gap-6 place-items-center">
       {% for album in albums %}
-        <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow">
-          {% if album.image %}
-            <img src="{{ asset('images/assets/album/' ~ album.image) }}" alt="{{ album.title }}" class="w-[200px] h-[200px] object-cover rounded mb-4" />
-          {% endif %}
+        <div class="p-4 bg-white dark:bg-gray-800 rounded-lg shadow text-center">
+          <img src="{{ asset('images/assets/album/' ~ album.image) }}" alt="{{ album.title }}" class="w-[200px] h-[200px] object-cover rounded mb-4" />
           <h2 class="text-xl font-bold text-gray-900 dark:text-white">{{ album.title }}</h2>
-          <p class="text-sm text-gray-600 dark:text-gray-300">{{ album.band.name }}</p>
+          <p class="text-sm text-gray-600 dark:text-gray-300 mb-2">{{ album.band.name }}</p>
+
+          {# Bouton Favori #}
+          {% if app.user %}
+            <form action="{{ path('album_toggle_favorite', { id: album.id }) }}" method="post">
+              <input type="hidden" name="_token" value="{{ csrf_token('toggle_favorite' ~ album.id) }}" />
+
+              {% if app.user.favorites.contains(album) %}
+                <button type="submit" class="mt-2 inline-flex items-center px-3 py-1 text-sm font-medium rounded bg-gray-600 text-white hover:bg-gray-700">★ Retirer des favoris</button>
+              {% else %}
+                <button type="submit" class="mt-2 inline-flex items-center px-3 py-1 text-sm font-medium rounded bg-purple-600 text-white hover:bg-purple-700">☆ Ajouter aux favoris</button>
+              {% endif %}
+            </form>
+          {% else %}
+            <p class="text-sm text-gray-500 mt-2">Connectez-vous pour ajouter en favoris.</p>
+          {% endif %}
         </div>
       {% else %}
         <p class="col-span-full text-gray-500 dark:text-gray-400">Aucun album trouvé.</p>

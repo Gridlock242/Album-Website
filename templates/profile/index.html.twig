@@ -3,6 +3,7 @@
 {% block title %}Mon profil{% endblock %}
 
 {% block body %}
+{% if app.user %}
 <div class="bg-gray-100 dark:bg-gray-900 min-h-screen py-10">
     <div class="max-w-7xl mx-auto px-4 sm:px-6 lg:px-8">
         <div class="grid grid-cols-1 md:grid-cols-3 gap-6">
@@ -19,27 +20,30 @@
                         <a href="#" class="bg-blue-500 hover:bg-blue-600 text-white py-2 px-4 rounded-lg text-sm font-medium">Envoyer un message</a>
                     </div>
                 </div>
-
-                {# <hr class="my-6 border-gray-300 dark:border-gray-700"> #}
-
-                {# <div>
-                    <h2 class="text-sm font-semibold text-gray-700 dark:text-gray-300 uppercase tracking-wide"></h2>
-                    <ul class="mt-2 text-gray-600 dark:text-gray-400 text-sm space-y-1">
-                        <li>HTML/CSS</li>
-                        <li>Tailwind CSS</li>
-                        <li>JavaScript</li>
-                        <li>React</li>
-                        <li>PHP / Symfony</li>
-                    </ul>
-                </div> #}
             </div>
 
             <!-- Album favoris -->
             <div class="md:col-span-2 bg-white dark:bg-gray-800 shadow rounded-lg p-6">
                 <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Albums favoris</h2>
-                <p class="text-gray-600 dark:text-gray-300 text-sm">
-                    Passionnée de développement web, j'aime créer des applications élégantes, performantes et accessibles. Je me spécialise en front-end avec une solide base back-end grâce à Symfony.
-                </p>
+
+{% if favorites|length > 0 %}
+    <ul class="grid grid-cols-1 sm:grid-cols-2 lg:grid-cols-3 gap-4">
+        {% for album in favorites %}
+            <li class="bg-gray-100 dark:bg-gray-700 p-4 rounded-lg shadow">
+                        <img src="{{ asset('images/assets/album/' ~ album.image) }}" alt="{{ album.title }}" class="w-[200px] h-[200px] object-cover rounded mb-4" />
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white">{{ album.title }}</h3>
+                <p class="text-sm text-gray-600 dark:text-gray-300">{{ album.band.name }}</p>
+                {# ROUTE POUR ALLER VOIR LES DETAILS DE L'ALBUM #}
+                {# <a href="{{ path('album_show', { id: album.id }) }}" class="text-blue-500 hover:underline text-sm mt-2 inline-block">
+                    Voir l'album
+                </a> #}
+            </li>
+        {% endfor %}
+    </ul>
+{% else %}
+    <p class="text-gray-500 dark:text-gray-400">Aucun favori pour le moment.</p>
+{% endif %}
+
 
                 <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-8 mb-4">Mieux notés</h3>
 
@@ -48,5 +52,10 @@
         </div>
     </div>
 </div>
+{% else %}
+<div class="max-w-2xl px-4 py-8 mx-auto lg:py-16">
+<h1 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Vous devez être connecté pour accéder à ce contenu.</h1>
+</div>
+{% endif %}
 {% endblock %}
 

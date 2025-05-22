@@ -106,4 +106,25 @@ final class AdminAlbumController extends AbstractController
             'genres' => $genres,
         ]);
     }
+
+     #[Route('/album/{id}/favorite', name: 'album_toggle_favorite', methods: ['POST'])]
+    public function toggleFavorite(Album $album, EntityManagerInterface $em): Response
+    {
+        /** @var \App\Entity\User $user */
+        $user = $this->getUser();
+
+        if (!$user) {
+            return $this->redirectToRoute('app_login');
+        }
+
+        if ($user->getFavorites()->contains($album)) {
+            $user->removeFavorite($album);
+        } else {
+            $user->addFavorite($album);
+        }
+
+        $em->flush();
+
+        return $this->redirectToRoute('app_index'); 
+    }
 }
