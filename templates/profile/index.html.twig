@@ -9,7 +9,7 @@
             <!-- Profil utilisateur -->
             <div class="bg-white dark:bg-gray-800 shadow rounded-lg p-6">
                 <div class="flex flex-col items-center text-center">
-                    <img src="https://randomuser.me/api/portraits/men/94.jpg"
+                    <img src="{{ asset('images/assets/user/admin.png') }}"
                          alt="Photo de profil"
                          class="w-32 h-32 rounded-full shadow mb-4">
                     <h1 class="text-xl font-semibold text-gray-800 dark:text-white">{{ app.user.email }}</h1>
@@ -34,32 +34,16 @@
                 </div> #}
             </div>
 
-            <!-- À propos & expériences -->
+            <!-- Album favoris -->
             <div class="md:col-span-2 bg-white dark:bg-gray-800 shadow rounded-lg p-6">
-                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">À propos de moi</h2>
+                <h2 class="text-xl font-semibold text-gray-800 dark:text-white mb-4">Albums favoris</h2>
                 <p class="text-gray-600 dark:text-gray-300 text-sm">
                     Passionnée de développement web, j'aime créer des applications élégantes, performantes et accessibles. Je me spécialise en front-end avec une solide base back-end grâce à Symfony.
                 </p>
 
-                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-8 mb-4">Expériences</h3>
+                <h3 class="text-lg font-semibold text-gray-800 dark:text-white mt-8 mb-4">Mieux notés</h3>
 
                 <div class="space-y-6 text-sm text-gray-700 dark:text-gray-300">
-                    <div>
-                        <div class="flex justify-between font-semibold">
-                            <span>Développeuse Web</span>
-                            <span class="text-sm font-normal">ABC Company · 2023 - Aujourd'hui</span>
-                        </div>
-                        <p class="mt-1">Développement d'applications Symfony, création d'interfaces avec Tailwind CSS, mise en place d'APIs REST.</p>
-                    </div>
-
-                    <div>
-                        <div class="flex justify-between font-semibold">
-                            <span>Stagiaire développement</span>
-                            <span class="text-sm font-normal">XYZ Studio · 2022</span>
-                        </div>
-                        <p class="mt-1">Refonte d'une application web avec Vue.js, intégration d'une charte graphique sur Tailwind CSS.</p>
-                    </div>
-                </div>
             </div>
         </div>
     </div>
