@@ -21,30 +21,38 @@ final class IndexController extends AbstractController
         GenreRepository $genreRepository,
         AlbumRepository $albumRepository,
         EntityManagerInterface $em,
-        int $page = 1
+        int $page = 1 // Garde ça si tu prévois une pagination future
     ): Response {
         $genres = $genreRepository->findBy([], ['name' => 'ASC']);
-        $albums = $albumRepository->findAll();
         $user = $this->getUser();
 
+        // Récupère les paramètres de recherche de l'URL
+        $query = $request->query->get('q');
+        $year = $request->query->get('year');
+        $genreId = $request->query->get('genre');
+
+        // Récupère les albums filtrés via le repository
+        $albums = $albumRepository->findFilteredAlbums($query, $genreId, $year); // Utilise ta méthode existante
         $ratingsForms = [];
 
-        foreach ($albums as $album) {
-            // Vérifie si une note existe déjà pour cet album et cet utilisateur
-            $existingRating = $em->getRepository(Rating::class)->findOneBy([
-                'user' => $user,
-                'album' => $album,
-            ]);
+        if ($user) { // Assure-toi que l'utilisateur est connecté pour créer des formulaires de notation
+            foreach ($albums as $album) {
+                // Vérifie si une note existe déjà pour cet album et cet utilisateur
+                $existingRating = $em->getRepository(Rating::class)->findOneBy([
+                    'user' => $user,
+                    'album' => $album,
+                ]);
 
-            $rating = $existingRating ?: new Rating();
-            $rating->setUser($user);
-            $rating->setAlbum($album);
+                $rating = $existingRating ?: new Rating();
+                $rating->setUser($user);
+                $rating->setAlbum($album);
 
-            $form = $this->createForm(RatingType::class, $rating, [
-                'action' => $this->generateUrl('album_rate', ['id' => $album->getId()])
-            ]);
+                $form = $this->createForm(RatingType::class, $rating, [
+                    'action' => $this->generateUrl('album_rate', ['id' => $album->getId()])
+                ]);
 
-            $ratingsForms[$album->getId()] = $form->createView();
+                $ratingsForms[$album->getId()] = $form->createView();
+            }
         }
 
         return $this->render('index/index.html.twig', [
@@ -55,6 +63,7 @@ final class IndexController extends AbstractController
         ]);
     }
 
+    // Le reste de ton contrôleur (méthode rate) reste inchangé
     #[Route('/album/{id}/rate', name: 'album_rate', methods: ['POST'])]
     public function rate(Request $request, Album $album, EntityManagerInterface $em): Response
     {
@@ -82,6 +91,7 @@ final class IndexController extends AbstractController
             $em->flush();
         }
 
-        return $this->redirectToRoute('app_home'); // redirection vers ta page d'accueil
+        // Utilise la route app_index pour revenir à la page principale après une note
+        return $this->redirectToRoute('app_index');
     }
 }

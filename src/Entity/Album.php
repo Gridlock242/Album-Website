@@ -32,7 +32,8 @@ class Album
      * @var Collection<int, Genre>
      */
     #[ORM\ManyToMany(targetEntity: Genre::class, inversedBy: 'albums')]
-    #[ORM\JoinTable(name: 'album_genre')]    private Collection $genres;
+    #[ORM\JoinTable(name: 'album_genre')]
+    private Collection $genres;
 
     /**
      * @var Collection<int, Rating>
