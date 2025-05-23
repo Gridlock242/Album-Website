@@ -18,18 +18,16 @@ class AlbumRepository extends ServiceEntityRepository
     }
 
     /**
-     * Retourne les albums filtrés par recherche libre, genre et année.
      *
-     * @param string|null $searchTerm La chaîne de recherche (titre de l'album ou nom de l'artiste).
-     * @param int|null $genreId L'ID du genre.
-     * @param int|null $year L'année de sortie.
+     * @param string|null 
+     * @param int|null 
+     * @param int|null 
      * @return Album[]
      */
     public function findFilteredAlbums(?string $searchTerm, ?int $genreId, ?int $year): array
     {
         $qb = $this->createQueryBuilder('a')
-            // Changer 'a.genre' en 'a.genres' ici !
-            ->leftJoin('a.genres', 'g') // <-- Correction ici : 'genres' au pluriel
+            ->leftJoin('a.genres', 'g') // Erreur ici qui posait problème (mauvais nommage)
             ->addSelect('g')
             ->leftJoin('a.band', 'b')
             ->addSelect('b');
@@ -43,20 +41,16 @@ class AlbumRepository extends ServiceEntityRepository
         }
 
         if ($genreId) {
-            // Puisque c'est une relation ManyToMany, tu dois vérifier si 'g.id' est dans la collection 'genres' de l'album
-            // ou si l'album a un genre avec cet ID.
-            // La façon actuelle (g.id = :genreId) est correcte si 'g' est l'alias du genre dans la jointure.
             $qb->andWhere('g.id = :genreId')
                 ->setParameter('genreId', $genreId);
         }
 
-        // Si 'releaseDate' est un DateTime et tu veux filtrer par année
         if ($year) {
             $qb->andWhere('YEAR(a.releaseDate) = :year')
                 ->setParameter('year', $year);
         }
 
-        $qb->orderBy('a.releaseDate', 'DESC') // Ordre par date de sortie
+        $qb->orderBy('a.releaseDate', 'DESC') // Rangement par ordre de sortie
            ->addOrderBy('a.title', 'ASC');
 
         return $qb->getQuery()->getResult();

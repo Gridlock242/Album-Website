@@ -14,7 +14,6 @@
   {# Formulaire de recherche par nom d'artiste/album #}
   <form action="{{ path('app_index') }}" method="get" class="w-full md:w-1/2">
     <div class="relative">
-      {# Ajoute un attribut 'name="q"' ici #}
       <input type="search" id="q" name="q" placeholder="Tapez un nom d'artiste, d'album..." required class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500" />
       <div class="absolute inset-y-0 start-0 flex items-center ps-3 pointer-events-none">
         <svg class="w-4 h-4 text-gray-500 dark:text-gray-400" fill="none" viewBox="0 0 20 20">
@@ -27,7 +26,6 @@
 
   {# Formulaire de recherche par année #}
   <form action="{{ path('app_index') }}" method="get" class="w-full md:w-1/4">
-    {# Ajoute un attribut 'name="year"' ici #}
     <select id="date" name="year" onchange="this.form.submit()" class="h-12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
       <option value="">Sélectionnez une année</option>
       {% set currentYear = 'now'|date('Y') %}

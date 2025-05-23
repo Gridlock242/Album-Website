@@ -21,23 +21,20 @@ final class IndexController extends AbstractController
         GenreRepository $genreRepository,
         AlbumRepository $albumRepository,
         EntityManagerInterface $em,
-        int $page = 1 // Garde ça si tu prévois une pagination future
+        int $page = 1
     ): Response {
         $genres = $genreRepository->findBy([], ['name' => 'ASC']);
         $user = $this->getUser();
 
-        // Récupère les paramètres de recherche de l'URL
         $query = $request->query->get('q');
         $year = $request->query->get('year');
         $genreId = $request->query->get('genre');
 
-        // Récupère les albums filtrés via le repository
         $albums = $albumRepository->findFilteredAlbums($query, $genreId, $year); // Utilise ta méthode existante
         $ratingsForms = [];
 
-        if ($user) { // Assure-toi que l'utilisateur est connecté pour créer des formulaires de notation
+        if ($user) {
             foreach ($albums as $album) {
-                // Vérifie si une note existe déjà pour cet album et cet utilisateur
                 $existingRating = $em->getRepository(Rating::class)->findOneBy([
                     'user' => $user,
                     'album' => $album,
@@ -63,13 +60,11 @@ final class IndexController extends AbstractController
         ]);
     }
 
-    // Le reste de ton contrôleur (méthode rate) reste inchangé
     #[Route('/album/{id}/rate', name: 'album_rate', methods: ['POST'])]
     public function rate(Request $request, Album $album, EntityManagerInterface $em): Response
     {
         $user = $this->getUser();
 
-        // Empêche de noter deux fois (tu peux modifier ça selon ta logique)
         $existing = $em->getRepository(Rating::class)->findOneBy([
             'user' => $user,
             'album' => $album,
@@ -90,8 +85,6 @@ final class IndexController extends AbstractController
             $em->persist($form->getData());
             $em->flush();
         }
-
-        // Utilise la route app_index pour revenir à la page principale après une note
         return $this->redirectToRoute('app_index');
     }
 }
