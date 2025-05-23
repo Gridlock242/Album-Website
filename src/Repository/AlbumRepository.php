@@ -19,9 +19,9 @@ class AlbumRepository extends ServiceEntityRepository
 
     /**
      *
-     * @param string|null 
-     * @param int|null 
-     * @param int|null 
+     * @param string|null $searchTerm La chaîne de recherche (titre de l'album ou nom de l'artiste).
+     * @param int|null $genreId L'ID du genre.
+     * @param int|null $year L'année de sortie.
      * @return Album[]
      */
     public function findFilteredAlbums(?string $searchTerm, ?int $genreId, ?int $year): array
@@ -35,9 +35,9 @@ class AlbumRepository extends ServiceEntityRepository
         if ($searchTerm) {
             $qb->andWhere(
                 $qb->expr()->like('a.title', ':search') . ' OR ' .
-                $qb->expr()->like('b.name', ':search')
+                    $qb->expr()->like('b.name', ':search')
             )
-            ->setParameter('search', '%' . $searchTerm . '%');
+                ->setParameter('search', '%' . $searchTerm . '%');
         }
 
         if ($genreId) {
@@ -46,12 +46,17 @@ class AlbumRepository extends ServiceEntityRepository
         }
 
         if ($year) {
-            $qb->andWhere('YEAR(a.releaseDate) = :year')
-                ->setParameter('year', $year);
+            $start = new \DateTimeImmutable("$year-01-01 00:00:00");
+            $end = $start->modify('+1 year');
+
+            $qb->andWhere('a.releaseDate >= :start')
+                ->andWhere('a.releaseDate < :end')
+                ->setParameter('start', $start)
+                ->setParameter('end', $end);
         }
 
-        $qb->orderBy('a.releaseDate', 'DESC') // Rangement par ordre de sortie
-           ->addOrderBy('a.title', 'ASC');
+        $qb->orderBy('a.releaseDate', 'DESC') // Randem
+            ->addOrderBy('a.title', 'ASC');
 
         return $qb->getQuery()->getResult();
     }
@@ -81,4 +86,3 @@ class AlbumRepository extends ServiceEntityRepository
 //            ->getOneOrNullResult()
 //        ;
 //    }
-
