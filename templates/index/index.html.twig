@@ -11,7 +11,6 @@
 
 {# PARTIE RECHERCHE #}
 <div class="flex flex-col md:flex-row gap-4 mb-8">
-  {# Formulaire de recherche par nom d'artiste/album #}
   <form action="{{ path('app_index') }}" method="get" class="w-full md:w-1/2">
     <div class="relative">
       <input type="search" id="q" name="q" placeholder="Tapez un nom d'artiste, d'album..." required class="block w-full p-4 ps-10 text-sm text-gray-900 border border-gray-300 rounded-lg bg-gray-50 focus:ring-purple-500 focus:border-purple-500 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500" />
@@ -37,7 +36,6 @@
 
   {# Formulaire de recherche par genre #}
   <form action="{{ path('app_index') }}" method="get" class="w-full md:w-1/4">
-    {# L'attribut 'name="genre"' est déjà présent, mais ajoute onchange pour soumettre le formulaire #}
     <select id="genre" name="genre" onchange="this.form.submit()" class="h-12 bg-gray-50 border border-gray-300 text-gray-900 text-sm rounded-lg focus:ring-purple-500 focus:border-purple-500 block w-full p-2.5 dark:bg-gray-700 dark:border-gray-600 dark:placeholder-gray-400 dark:text-white dark:focus:ring-purple-500 dark:focus:border-purple-500">
       <option value="">Sélectionnez un genre</option>
       {% for genre in genres %}
@@ -45,6 +43,15 @@
       {% endfor %}
     </select>
   </form>
+
+  <form method="GET" action="{{ path('app_index') }}">
+    <button
+        type="submit"
+        class="font-medium text-sm px-2 py-1 bg-gray-100 dark:bg-gray-800 text-gray-800 dark:text-gray-200 border border-gray-300 dark:border-gray-700 rounded-lg hover:bg-gray-200 dark:hover:bg-gray-700 transition"
+    >
+        Réinitialiser la recherche
+    </button>
+</form>
 </div>
 
     {# PARTIE AFFICHAGE ALBUMS #}
@@ -87,7 +94,7 @@
                   {% endfor %}
                 </div>
 
-                {# Cette ligne sert à retirer l'énorme bloc d'étoiles que génère symfony #}
+                {# Cette ligne sert à retirer l'énorme bloc d'étoiles que génère symfony (pas compris pourquoi c'était là)#}
               {{ form_end(ratingsForms[album.id], { render_rest: false }) }}
             </div>
 
